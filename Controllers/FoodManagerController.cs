@@ -4,16 +4,20 @@ using System.Diagnostics;
 
 namespace food_manager.Controllers
 {
-    public class HomeController : Controller
+    public class FoodManagerController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+        private readonly ILogger<FoodManagerController> _logger;
 
-        public HomeController(ILogger<HomeController> logger)
+        public FoodManagerController(ILogger<FoodManagerController> logger)
         {
             _logger = logger;
         }
 
-        public IActionResult Index()
+        public IActionResult UserSetting()
+        {
+            return View();
+        }
+        public IActionResult Register()
         {
             return View();
         }

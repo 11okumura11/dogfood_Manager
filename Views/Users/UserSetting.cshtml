@@ -1,0 +1,52 @@
+﻿@model food_manager.Models.Data.User
+
+@{
+    ViewData["Title"] = "Welcome";
+}
+    <div class="login-page">
+      <h3 class="display-4">FoodManager</h3>
+  <div class="form">
+@*新規登録画面*@
+      <form class="register-form"　asp-action="Create">
+        <div class="form-group">
+            <input asp-for="Name" class="form-control" placeholder="User Name"/>
+            <span asp-validation-for="Name" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <input asp-for="Email" class="form-control" placeholder="Email Address"/>
+            <span asp-validation-for="Email" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <input asp-for="Password" type="password" class="form-control" placeholder="Password"/>
+            <span asp-validation-for="Password" class="text-danger"></span>
+        </div>
+      <button>Sign up</button>
+      <p class="message">登録が完了した方はこちらから <a data-toggle=".login-form">Sign in</a></p>
+    </form>
+
+@*ログイン画面*@
+    <form class="login-form"　asp-action="Login">
+      <div class="form-group">
+        <input asp-for="Name" class="form-control" placeholder="User Name"/>
+        <span asp-validation-for="Name" class="text-danger"></span>
+      </div>
+      <div class="form-group">
+        <input asp-for="Password" type="password" class="form-control" placeholder="Password"/>
+        <span asp-validation-for="Password" class="text-danger"></span>
+      </div>
+      <button>Sign in</button>
+      <p class="message">パスワードをお忘れですか? <a data-toggle=".forgot-form">Resetting a password</a></p>
+      <p class="message">登録がまだの方はこちらから <a data-toggle=".register-form">Sign up</a></p>
+    </form>
+
+@*パスワード再設定画面*@
+    <form class="forgot-form" asp-action="Resetting">
+        <h5>パスワード再設定</h5>
+      <input type="text" placeholder="Email Address"/>
+      <button>Next</button>
+      <p class="message"><a data-toggle=".login-form">Back to login</a></p>
+
+    </form>
+
+  </div>
+</div>
