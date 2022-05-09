@@ -1,4 +1,15 @@
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using food_manager.Models.Data;
+
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddDbContext<food_managerContext>(options =>
+       options.UseSqlServer(
+           //appsettings.json‚©‚çˆø”–¼‚ÌÚ‘±•¶š—ñ‚ğæ“¾(appsettings.json‚Ì11s–Ú‚Ì’l)
+           builder.Configuration.GetConnectionString("DefaultConnection")
+       )
+);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();

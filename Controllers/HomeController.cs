@@ -1,8 +1,8 @@
-﻿using dogfood_Manager.Models;
+﻿using food_manager.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
-namespace dogfood_Manager.Controllers
+namespace food_manager.Controllers
 {
     public class HomeController : Controller
     {

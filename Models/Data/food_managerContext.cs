@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 
-namespace food_Manager.Models.Data
+namespace food_manager.Models.Data
 {
     public partial class food_managerContext : DbContext
     {

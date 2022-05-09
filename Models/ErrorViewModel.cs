@@ -1,4 +1,4 @@
-namespace dogfood_Manager.Models
+namespace food_manager.Models
 {
     public class ErrorViewModel
     {

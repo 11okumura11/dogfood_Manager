@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace food_Manager.Models.Data
+namespace food_manager.Models.Data
 {
     public partial class Kind
     {
