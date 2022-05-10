@@ -1,6 +1,8 @@
 ﻿@model food_manager.Models.Data.User
 
 @{
+    Layout = "_Layout2";
+
     ViewData["Title"] = "Welcome";
 }
     <div class="login-page">
@@ -42,7 +44,10 @@
 @*パスワード再設定画面*@
     <form class="forgot-form" asp-action="Resetting">
         <h5>パスワード再設定</h5>
-      <input type="text" placeholder="Email Address"/>
+        <div class="form-group">
+            <input asp-for="Email" class="form-control" placeholder="Email Address"/>
+            <span asp-validation-for="Email" class="text-danger"></span>
+        </div>
       <button>Next</button>
       <p class="message"><a data-toggle=".login-form">Back to login</a></p>
 

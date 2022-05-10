@@ -13,7 +13,7 @@ namespace food_manager.Controllers
             _logger = logger;
         }
 
-        public IActionResult UserSetting()
+        public IActionResult User()
         {
             return View();
         }

@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using food_manager.Models.Data;
 using food_manager.Models;
+using Microsoft.AspNetCore.Http;
 
 namespace food_manager.Controllers
 {
@@ -21,7 +22,8 @@ namespace food_manager.Controllers
             _context = context;
         }
 
-        public IActionResult UserSetting()
+        //画面表示
+        public IActionResult User()
         {
             return View();
         }
@@ -29,20 +31,40 @@ namespace food_manager.Controllers
 
         //ログイン
         [HttpPost]
-        [AllowAnonymous]
         [ValidateAntiForgeryToken]
         public IActionResult Login([Bind("Name,Password")] User user)
         {
             if (ModelState.IsValid)
             {
-                IQueryable query = from u in _context.Users
-                                   select new
-                                   {
-                                      Name = u.Name,
-                                      Password = u.Password,
-                                   };
+                IQueryable<User> query = from u in _context.Users
+                                         where u.Name == user.Name &&
+                                               u.Password == user.Password
+                                       select new User
+                                       {
+                                          Id = u.Id,
+                                          Name = u.Name,
+                                          Password = u.Password,
+                                       };
+                int Id = query.Select(q => q.Id).FirstOrDefault();
+                String Name = query.Select(q => q.Name).FirstOrDefault();
+                String Password = query.Select(q => q.Password).FirstOrDefault();
+
+                if (Name == user.Name && Password == user.Password)
+                {
+                    // ユーザー認証 成功
+                    HttpContext.Session.SetString("Name", Name);
+                    HttpContext.Session.SetInt32("Id", Id);
+
+                    return RedirectToAction("Index", "Home");
+                }
+                else
+                {
+                    // ユーザー認証 失敗
+                    this.ModelState.AddModelError(string.Empty, "指定されたユーザー名またはパスワードが正しくありません。");
+                    return View(user);
+                }
             }
-            return View(user);
+            return View("User");
         }
 
         //ユーザー新規登録
@@ -68,8 +90,33 @@ namespace food_manager.Controllers
                 _context.SaveChanges();
                 return RedirectToAction("UserSetting");
             }
-              return View(user);
+              return View("User");
         }
+
+        //パスワード再設定
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Resetting([Bind("Email")] User user)
+        {
+            if (ModelState.IsValid)
+            {
+                IQueryable query = from u in _context.Users
+                                   select new
+                                   {
+                                       u.Name,
+                                       u.Password,
+                                   };
+            }
+            return View(user);
+        }
+
+        //ログアウト
+        [Authorize]
+        public ActionResult Logout()
+        {
+            return View();
+        }
+
 
     }
 }
