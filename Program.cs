@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using food_manager.Models.Data;
+using Microsoft.AspNetCore.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,18 +13,39 @@ builder.Services.AddDbContext<food_managerContext>(options =>
            )
        );
 
+builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+    .AddUserStore<food_managerContext>();
 builder.Services.AddRazorPages();
-builder.Services.AddControllersWithViews();
 
-builder.Services.AddDistributedMemoryCache();
-
-builder.Services.AddSession(options =>
+builder.Services.Configure<IdentityOptions>(options =>
 {
-    options.IdleTimeout = TimeSpan.FromSeconds(5);
-    options.Cookie.HttpOnly = true;
-    options.Cookie.IsEssential = true;
+    // Password settings.
+    options.Password.RequireDigit = true;
+    options.Password.RequireLowercase = true;
+    options.Password.RequireNonAlphanumeric = true;
+    options.Password.RequireUppercase = true;
+    options.Password.RequiredLength = 6;
+    options.Password.RequiredUniqueChars = 1;
+
+    // Lockout settings.
+    options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
+    options.Lockout.MaxFailedAccessAttempts = 5;
+    options.Lockout.AllowedForNewUsers = true;
+
+    // User settings.
+    options.User.RequireUniqueEmail = false;
 });
 
+builder.Services.ConfigureApplicationCookie(options =>
+{
+    // Cookie settings
+    options.Cookie.HttpOnly = true;
+    options.ExpireTimeSpan = TimeSpan.FromMinutes(5);
+
+    options.LoginPath = "/Users/User";
+    options.AccessDeniedPath = "/Identity/Account/AccessDenied";
+    options.SlidingExpiration = true;
+});
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
@@ -42,9 +64,8 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseAuthentication();
 app.UseAuthorization();
-
-app.UseSession();
 
 app.MapRazorPages();
 app.MapDefaultControllerRoute();

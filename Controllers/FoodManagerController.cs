@@ -1,9 +1,11 @@
 ﻿using food_manager.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
 namespace food_manager.Controllers
 {
+    [Authorize]
     public class FoodManagerController : Controller
     {
         private readonly ILogger<FoodManagerController> _logger;
@@ -13,8 +15,10 @@ namespace food_manager.Controllers
             _logger = logger;
         }
 
-        public IActionResult User()
+        public IActionResult Index()
         {
+           ViewBag.SessionName = HttpContext.Session.GetString("Name");
+
             return View();
         }
         public IActionResult Register()
